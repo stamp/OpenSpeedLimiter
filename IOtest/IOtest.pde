@@ -67,10 +67,11 @@ void loop()
     digitalWrite(A2 + digitPosition,HIGH);
     digitalWrite(13,digitPosition%2);
     
-    speed.write(digitPosition*45);
+    
     
     for (int numIndex=0; numIndex <= 9; numIndex++)
     {
+      speed.write(analogRead(0)/6);
       int number =  numbers[numIndex];
       digitalWrite(segmentA, bitRead(number, 0) );
       digitalWrite(segmentB, bitRead(number, 1) );
