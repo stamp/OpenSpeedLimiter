@@ -61,18 +61,37 @@ void setup()
 
 void loop()
 {
+  int analog = analogRead(0);
+  display(analog);
   
+  digitalWrite(13,analog>500);
+}
+
+void display(int data) {
   for (int digitPosition=0; digitPosition < 4; digitPosition++)
   {
-    digitalWrite(A2 + digitPosition,HIGH);
-    digitalWrite(13,digitPosition%2);
-    
-    
-    
-    for (int numIndex=0; numIndex <= 9; numIndex++)
-    {
-      speed.write(analogRead(0)/6);
-      int number =  numbers[numIndex];
+      int tal;
+      
+      switch(digitPosition) {
+        case 0:
+          tal = data/1000;
+          data -= tal * 1000;
+          break;
+        case 1:
+          tal = data/100;
+          data -= tal * 100;
+          break;
+        case 2:
+          tal = data/10;
+          data -= tal * 10;
+          break;
+        case 3:
+          tal = data;
+          data -= tal;
+          break;
+      }
+
+      int number =  numbers[tal];
       digitalWrite(segmentA, bitRead(number, 0) );
       digitalWrite(segmentB, bitRead(number, 1) );
       digitalWrite(segmentC, bitRead(number, 2) );
@@ -80,10 +99,8 @@ void loop()
       digitalWrite(segmentE, bitRead(number, 4) );
       digitalWrite(segmentF, bitRead(number, 5) );
       digitalWrite(segmentG, bitRead(number, 6) );
-      
-      delay(100);
-    }
-
+    digitalWrite(A2 + digitPosition,HIGH);  
+      delay(1);
     digitalWrite(A2 + digitPosition,LOW);
   }
 }
